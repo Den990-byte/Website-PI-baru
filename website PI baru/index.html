@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB Test Kemampuan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                        'primary-dark': '#4B4BC4'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .timer-warning {
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .gift-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+
+        .gift-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .gift-card-english {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .gift-card-math {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .gift-card-indonesia {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .gift-card-physics {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .gift-card-coming-soon {
+            background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-300">
+    <!-- Home Page -->
+    <div id="homePage" class="container mx-auto px-4 py-8 max-w-md">
+        <div class="text-center mb-8 fade-in">
+            <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-2">TEST PENGETAHUAN</h1>
+            <p class="text-gray-600 dark:text-gray-300">Uji Kemampuan dan Kepintaran Anda</p>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 fade-in">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">Tes Pengetahuan</h2>
+                <p class="text-gray-600 dark:text-gray-300 text-sm">20 soal • 30 menit</p>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nama Lengkap</label>
+                    <input type="text" id="studentName" placeholder="Masukkan nama Anda" 
+                           class="w-full px-4 py-3 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tingkat Pendidikan</label>
+                    <select id="educationLevel" 
+                            class="w-full px-4 py-3 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white">
+                        <option value="">Pilih tingkat pendidikan</option>
+                        <option value="SD">SD (Sekolah Dasar)</option>
+                        <option value="SMP">SMP (Sekolah Menengah Pertama)</option>
+                        <option value="SMA">SMA (Sekolah Menengah Atas)</option>
+                    </select>
+                </div>
+                
+                <button onclick="continueToTestType()" 
+                        class="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 mt-6">
+                    Lanjutkan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Test Type Selection Page -->
+    <div id="testTypePage" class="hidden container mx-auto px-4 py-8 max-w-md">
+        <div class="text-center mb-8 fade-in">
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Pilih Jenis Tes</h1>
+            <p class="text-gray-600 dark:text-gray-300">Pilih mode tes yang ingin Anda ikuti</p>
+        </div>
+        
+        <div class="space-y-4 fade-in">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition-shadow duration-200" onclick="selectTestType('practice')">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mr-4">
+                        <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Tes Latihan</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm">Berlatih tanpa tekanan, bisa diulang</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 cursor-pointer hover:shadow-xl transition-shadow duration-200" onclick="selectTestType('actual')">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-red-100 dark:bg-red-900 rounded-lg flex items-center justify-center mr-4">
+                        <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Tes Sebenarnya</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm">Tes resmi, hanya satu kesempatan</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button onclick="showHomePage()" 
+                class="w-full mt-6 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-300 font-semibold py-3 px-6 rounded-lg transition-colors duration-200">
+            Kembali
+        </button>
+    </div>
+
+    <!-- Lesson Selection Page -->
+    <div id="lessonPage" class="hidden container mx-auto px-4 py-8 max-w-4xl">
+        <div class="text-center mb-8 fade-in">
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Pilih Mata Pelajaran</h1>
+            <p class="text-gray-600 dark:text-gray-300">Pilih mata pelajaran yang ingin Anda tes</p>
+            <div id="levelInfo" class="mt-2 text-sm text-primary font-semibold"></div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 fade-in">
+            <!-- English Gift Card -->
+            <div class="gift-card gift-card-english rounded-xl p-6 cursor-pointer text-white" onclick="selectLesson('english')">
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-4">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.01-4.65.51-6.81-1.66-2.34-4.15-3.13-6.9-1.09l-.27.25c-1.13-1.51-1.17-3.67-.1-5.29l-.9-.8c-1.63 2.25-1.56 5.41.17 7.42L.8 8.78l.79.9 2.47-2.46c2.34 1.56 4.85 1.51 6.9-.1.1-.08.2-.16.3-.25.15-.17.28-.36.4-.56.1.1.2.2.31.31l2.54 2.5c.73-.72 1.9-.72 2.63 0 .74.72.74 1.9 0 2.63-.74.73-1.91.73-2.64.01zm-.78-.78l2.54 2.51c1.5 1.51 1.5 3.94 0 5.44-1.5 1.51-3.93 1.51-5.44 0l-2.54-2.51.03-.03c1.74-1.94 2.01-4.65.51-6.81-.45-.64-.99-1.15-1.58-1.56l.9-.9z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Bahasa Inggris</h3>
+                    <p class="text-sm opacity-90 mb-4">Test kemampuan Bahasa Inggris Anda</p>
+                    <div class="bg-white bg-opacity-20 rounded-full px-4 py-1 text-sm">
+                        Tersedia
+                    </div>
+                </div>
+            </div>
+
+            <!-- Math Gift Card (Coming Soon) -->
+            <div class="gift-card gift-card-coming-soon rounded-xl p-6 cursor-not-allowed text-white">
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-4">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H9v-2h5v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Matematika</h3>
+                    <p class="text-sm opacity-90 mb-4">Test kemampuan Matematika Anda</p>
+                    <div class="bg-white bg-opacity-20 rounded-full px-4 py-1 text-sm">
+                        Segera Hadir
+                    </div>
+                </div>
+            </div>
+
+            <!-- Indonesian Gift Card (Coming Soon) -->
+            <div class="gift-card gift-card-coming-soon rounded-xl p-6 cursor-not-allowed text-white">
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-4">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-5 14H9v-2h6v2zm3-4H6v-2h12v2zm0-4H6V6h12v2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Bahasa Indonesia</h3>
+                    <p class="text-sm opacity-90 mb-4">Test kemampuan Bahasa Indonesia Anda</p>
+                    <div class="bg-white bg-opacity-20 rounded-full px-4 py-1 text-sm">
+                        Segera Hadir
+                    </div>
+                </div>
+            </div>
+
+            <!-- Physics Gift Card (Coming Soon, only for SMA) -->
+            <div id="physicsCard" class="hidden gift-card gift-card-coming-soon rounded-xl p-6 cursor-not-allowed text-white">
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-4">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Fisika</h3>
+                    <p class="text-sm opacity-90 mb-4">Test kemampuan Fisika Anda</p>
+                    <div class="bg-white bg-opacity-20 rounded-full px-4 py-1 text-sm">
+                        Segera Hadir
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flex justify-center mt-8">
+            <button onclick="backToTestType()" 
+                    class="px-8 py-3 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-300 font-semibold rounded-lg transition-colors duration-200">
+                Kembali
+            </button>
+        </div>
+    </div>
+
+    <!-- Test Page -->
+    <div id="testPage" class="hidden container mx-auto px-4 py-4 max-w-2xl">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-4">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <span class="text-sm text-gray-600 dark:text-gray-400">Soal </span>
+                    <span id="currentQuestion" class="font-semibold text-gray-800 dark:text-white">1</span>
+                    <span class="text-gray-600 dark:text-gray-400"> dari 20</span>
+                </div>
+                <div id="timer" class="text-lg font-bold text-primary">30:00</div>
+            </div>
+            
+            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-6">
+                <div id="progressBar" class="bg-primary h-2 rounded-full transition-all duration-300" style="width: 5%"></div>
+            </div>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div id="questionContainer">
+                <h2 id="questionText" class="text-lg font-semibold text-gray-800 dark:text-white mb-6"></h2>
+                <div id="optionsContainer" class="space-y-3"></div>
+            </div>
+            
+            <div class="flex justify-between mt-8">
+                <button id="prevBtn" onclick="previousQuestion()" 
+                        class="px-6 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200">
+                    Sebelumnya
+                </button>
+                <button id="nextBtn" onclick="nextQuestion()" 
+                        class="px-6 py-2 bg-primary hover:bg-primary-dark text-white rounded-lg transition-colors duration-200">
+                    Selanjutnya
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Page -->
+    <div id="resultsPage" class="hidden container mx-auto px-4 py-8 max-w-4xl">
+        <div class="text-center mb-8 fade-in">
+            <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-2">Hasil Tes</h1>
+            <div id="scoreInfo" class="text-xl text-gray-600 dark:text-gray-300"></div>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-green-50 dark:bg-green-900 p-4 rounded-lg">
+                    <div id="correctCount" class="text-2xl font-bold text-green-600 dark:text-green-400">0</div>
+                    <div class="text-sm text-green-600 dark:text-green-400">Benar</div>
+                </div>
+                <div class="bg-red-50 dark:bg-red-900 p-4 rounded-lg">
+                    <div id="wrongCount" class="text-2xl font-bold text-red-600 dark:text-red-400">0</div>
+                    <div class="text-sm text-red-600 dark:text-red-400">Salah</div>
+                </div>
+                <div class="bg-yellow-50 dark:bg-yellow-900 p-4 rounded-lg">
+                    <div id="unansweredCount" class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">0</div>
+                    <div class="text-sm text-yellow-600 dark:text-yellow-400">Tidak Dijawab</div>
+                </div>
+                <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg">
+                    <div id="scorePercentage" class="text-2xl font-bold text-blue-600 dark:text-blue-400">0%</div>
+                    <div class="text-sm text-blue-600 dark:text-blue-400">Nilai</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Detail Jawaban</h3>
+            <div id="detailedResults" class="space-y-4 max-h-96 overflow-y-auto"></div>
+        </div>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <button id="redoBtn" onclick="redoTest()" 
+                    class="hidden px-8 py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-colors duration-200">
+                Ulangi Tes
+            </button>
+            <button onclick="exitTest()" 
+                    class="px-8 py-3 bg-gray-500 hover:bg-gray-600 text-white font-semibold rounded-lg transition-colors duration-200">
+                Keluar
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Dark mode detection
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Question bank for different subjects and levels
+        const questionBank = {
+            english: {
+                SD: [
+                    {
+                        question: "What is the English word for 'buku'?",
+                        options: ["Book", "Pen", "Table", "Chair"],
+                        correct: 0
+                    },
+                    {
+                        question: "How do you say 'Selamat pagi' in English?",
+                        options: ["Good night", "Good morning", "Good afternoon", "Good evening"],
+                        correct: 1
+                    },
+                    {
+                        question: "What color is the sun?",
+                        options: ["Blue", "Green", "Yellow", "Red"],
+                        correct: 2
+                    },
+                    {
+                        question: "How many days are there in a week?",
+                        options: ["Six", "Seven", "Eight", "Five"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the opposite of 'big'?",
+                        options: ["Large", "Small", "Huge", "Tall"],
+                        correct: 1
+                    },
+                    {
+                        question: "Which animal says 'moo'?",
+                        options: ["Cat", "Dog", "Cow", "Bird"],
+                        correct: 2
+                    },
+                    {
+                        question: "What do you use to write?",
+                        options: ["Spoon", "Pen", "Cup", "Plate"],
+                        correct: 1
+                    },
+                    {
+                        question: "How do you say 'terima kasih' in English?",
+                        options: ["Please", "Sorry", "Thank you", "Excuse me"],
+                        correct: 2
+                    },
+                    {
+                        question: "What is 2 + 3?",
+                        options: ["Four", "Five", "Six", "Seven"],
+                        correct: 1
+                    },
+                    {
+                        question: "Which is a fruit?",
+                        options: ["Carrot", "Apple", "Potato", "Onion"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the English word for 'air'?",
+                        options: ["Fire", "Earth", "Water", "Wind"],
+                        correct: 2
+                    },
+                    {
+                        question: "How many fingers do you have on one hand?",
+                        options: ["Four", "Five", "Six", "Three"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the opposite of 'hot'?",
+                        options: ["Warm", "Cool", "Cold", "Freezing"],
+                        correct: 2
+                    },
+                    {
+                        question: "Which one is a body part?",
+                        options: ["Table", "Hand", "Book", "Car"],
+                        correct: 1
+                    },
+                    {
+                        question: "What do you wear on your feet?",
+                        options: ["Hat", "Shirt", "Shoes", "Gloves"],
+                        correct: 2
+                    },
+                    {
+                        question: "How do you say 'ya' in English?",
+                        options: ["No", "Yes", "Maybe", "Never"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the first day of the week?",
+                        options: ["Monday", "Sunday", "Tuesday", "Saturday"],
+                        correct: 0
+                    },
+                    {
+                        question: "Which is a color?",
+                        options: ["Happy", "Blue", "Fast", "Tall"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the English word for 'rumah'?",
+                        options: ["House", "School", "Store", "Hospital"],
+                        correct: 0
+                    },
+                    {
+                        question: "How many months are there in a year?",
+                        options: ["Ten", "Eleven", "Twelve", "Thirteen"],
+                        correct: 2
+                    }
+                ],
+                SMP: [
+                    {
+                        question: "Choose the correct form: 'She _____ to school every day.'",
+                        options: ["go", "goes", "going", "gone"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the past tense of 'eat'?",
+                        options: ["eated", "ate", "eaten", "eating"],
+                        correct: 1
+                    },
+                    {
+                        question: "Which sentence is correct?",
+                        options: ["I am student", "I am a student", "I am an student", "I student"],
+                        correct: 1
+                    },
+                    {
+                        question: "Choose the correct plural form of 'child':",
+                        options: ["childs", "childes", "children", "child"],
+                        correct: 2
+                    },
+                    {
+                        question: "What does 'beautiful' mean?",
+                        options: ["Ugly", "Pretty", "Sad", "Angry"],
+                        correct: 1
+                    },
+                    {
+                        question: "Complete: 'There _____ many books on the table.'",
+                        options: ["is", "are", "was", "am"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the opposite of 'expensive'?",
+                        options: ["costly", "cheap", "dear", "valuable"],
+                        correct: 1
+                    },
+                    {
+                        question: "Choose the correct question: 'Who _____ your name?'",
+                        options: ["are", "is", "do", "does"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the comparative form of 'good'?",
+                        options: ["gooder", "best", "better", "more good"],
+                        correct: 2
+                    },
+                    {
+                        question: "Complete: 'I _____ English every day.'",
+                        options: ["study", "studies", "studying", "studied"],
+                        correct: 0
+                    },
+                    {
+                        question: "Which is a preposition?",
+                        options: ["quickly", "in", "beautiful", "run"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the past tense of 'go'?",
+                        options: ["goed", "went", "gone", "going"],
+                        correct: 1
+                    },
+                    {
+                        question: "Choose the correct sentence:",
+                        options: ["He don't like pizza", "He doesn't like pizza", "He no like pizza", "He not like pizza"],
+                        correct: 1
+                    },
+                    {
+                        question: "What does 'library' mean?",
+                        options: ["Sekolah", "Perpustakaan", "Rumah sakit", "Pasar"],
+                        correct: 1
+                    },
+                    {
+                        question: "Complete: 'Can you _____ me your pen?'",
+                        options: ["borrow", "lend", "take", "give"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the superlative form of 'tall'?",
+                        options: ["taller", "tallest", "most tall", "more tall"],
+                        correct: 1
+                    },
+                    {
+                        question: "Choose the correct form: 'She _____ watching TV now.'",
+                        options: ["is", "are", "am", "be"],
+                        correct: 0
+                    },
+                    {
+                        question: "What is the plural of 'mouse'?",
+                        options: ["mouses", "mice", "mouse", "mis"],
+                        correct: 1
+                    },
+                    {
+                        question: "Complete: 'I _____ to the market yesterday.'",
+                        options: ["go", "goes", "went", "going"],
+                        correct: 2
+                    },
+                    {
+                        question: "What does 'although' mean?",
+                        options: ["because", "but", "and", "or"],
+                        correct: 1
+                    }
+                ],
+                SMA: [
+                    {
+                        question: "Choose the correct conditional: 'If I _____ rich, I would travel the world.'",
+                        options: ["am", "was", "were", "will be"],
+                        correct: 2
+                    },
+                    {
+                        question: "What is the passive form of 'The teacher teaches the students'?",
+                        options: ["The students teach by the teacher", "The students are taught by the teacher", "The students taught the teacher", "The teacher is taught by the students"],
+                        correct: 1
+                    },
+                    {
+                        question: "Choose the correct reported speech: He said, 'I am tired.'",
+                        options: ["He said that he was tired", "He said that he is tired", "He said that I am tired", "He said that I was tired"],
+                        correct: 0
+                    },
+                    {
+                        question: "Which sentence uses the present perfect correctly?",
+                        options: ["I have went to Jakarta", "I have gone to Jakarta", "I has gone to Jakarta", "I have go to Jakarta"],
+                        correct: 1
+                    },
+                    {
+                        question: "What does 'ubiquitous' mean?",
+                        options: ["rare", "everywhere", "difficult", "simple"],
+                        correct: 1
+                    },
+                    {
+                        question: "Choose the correct form: '_____ you finished your homework?'",
+                        options: ["Did", "Have", "Are", "Do"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the meaning of 'procrastinate'?",
+                        options: ["to do quickly", "to delay", "to finish", "to start"],
+                        correct: 1
+                    },
+                    {
+                        question: "Choose the correct relative pronoun: 'The book _____ I read was interesting.'",
+                        options: ["who", "which", "where", "when"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the correct form: 'I wish I _____ speak Chinese.'",
+                        options: ["can", "could", "will", "would"],
+                        correct: 1
+                    },
+                    {
+                        question: "Choose the correct subjunctive: 'It's important that he _____ on time.'",
+                        options: ["comes", "come", "came", "coming"],
+                        correct: 1
+                    },
+                    {
+                        question: "What does 'meticulous' mean?",
+                        options: ["careless", "very careful", "quick", "slow"],
+                        correct: 1
+                    },
+                    {
+                        question: "Choose the correct form: 'Neither John nor his friends _____ coming.'",
+                        options: ["is", "are", "was", "were"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the correct inversion: 'Never have I seen such beauty' means:",
+                        options: ["I have never seen such beauty", "I never see such beauty", "I will never see such beauty", "I had never seen such beauty"],
+                        correct: 0
+                    },
+                    {
+                        question: "Choose the correct form: 'The meeting _____ for two hours when she arrived.'",
+                        options: ["has been going on", "had been going on", "was going on", "is going on"],
+                        correct: 1
+                    },
+                    {
+                        question: "What does 'eloquent' mean?",
+                        options: ["silent", "fluent and persuasive", "confused", "angry"],
+                        correct: 1
+                    },
+                    {
+                        question: "Choose the correct form: 'By next year, I _____ my degree.'",
+                        options: ["will complete", "will have completed", "complete", "am completing"],
+                        correct: 1
+                    },
+                    {
+                        question: "What is the correct participle: '_____ by the news, she started crying.'",
+                        options: ["Shocking", "Shocked", "Shock", "To shock"],
+                        correct: 1
+                    },
+                    {
+                        question: "Choose the correct form: 'Had I known earlier, I _____ differently.'",
+                        options: ["would act", "would have acted", "will act", "act"],
+                        correct: 1
+                    },
+                    {
+                        question: "What does 'mitigate' mean?",
+                        options: ["to worsen", "to reduce", "to increase", "to ignore"],
+                        correct: 1
+                    },
+                    {
+                        question: "Choose the correct form: 'The proposal _____ by the committee yesterday.'",
+                        options: ["was rejected", "rejected", "is rejected", "has rejected"],
+                        correct: 0
+                    }
+                ]
+            }
+        };
+
+        let currentQuestions = [];
+
+        let currentUser = {
+            name: '',
+            education: '',
+            testType: '',
+            subject: ''
+        };
+
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let timeLeft = 1800; // 30 minutes in seconds
+        let timerInterval;
+        let testStarted = false;
+
+        function continueToTestType() {
+            const name = document.getElementById('studentName').value.trim();
+            const education = document.getElementById('educationLevel').value;
+
+            if (!name) {
+                showCustomAlert('Silakan masukkan nama Anda');
+                return;
+            }
+
+            if (!education) {
+                showCustomAlert('Silakan pilih tingkat pendidikan');
+                return;
+            }
+
+            currentUser.name = name;
+            currentUser.education = education;
+
+            document.getElementById('homePage').classList.add('hidden');
+            document.getElementById('testTypePage').classList.remove('hidden');
+        }
+
+        function selectTestType(type) {
+            currentUser.testType = type;
+            showLessonSelection();
+        }
+
+        function showLessonSelection() {
+            document.getElementById('testTypePage').classList.add('hidden');
+            document.getElementById('lessonPage').classList.remove('hidden');
+            
+            // Update level info
+            const testTypeText = currentUser.testType === 'practice' ? 'Tes Latihan' : 'Tes Sebenarnya';
+            document.getElementById('levelInfo').textContent = `${currentUser.education} - ${testTypeText}`;
+            
+            // Show physics card only for SMA
+            if (currentUser.education === 'SMA') {
+                document.getElementById('physicsCard').classList.remove('hidden');
+            } else {
+                document.getElementById('physicsCard').classList.add('hidden');
+            }
+        }
+
+        function selectLesson(subject) {
+            if (subject === 'english') {
+                currentUser.subject = subject;
+                initializeTest();
+            } else {
+                showCustomAlert('Mata pelajaran ini belum tersedia. Silakan pilih Bahasa Inggris.');
+            }
+        }
+
+        function initializeTest() {
+            currentQuestionIndex = 0;
+            userAnswers = new Array(20).fill(-1);
+            timeLeft = 1800;
+            testStarted = true;
+
+            // Get questions for the selected subject and education level
+            currentQuestions = [...questionBank[currentUser.subject][currentUser.education]];
+            shuffleQuestions();
+
+            document.getElementById('lessonPage').classList.add('hidden');
+            document.getElementById('testPage').classList.remove('hidden');
+
+            showQuestion();
+            startTimer();
+        }
+
+        function shuffleQuestions() {
+            for (let i = currentQuestions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [currentQuestions[i], currentQuestions[j]] = [currentQuestions[j], currentQuestions[i]];
+            }
+        }
+
+        function showQuestion() {
+            const question = currentQuestions[currentQuestionIndex];
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+            document.getElementById('questionText').textContent = question.question;
+
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = `p-4 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200 ${userAnswers[currentQuestionIndex] === index ? 'bg-primary text-white border-primary' : ''}`;
+                optionDiv.innerHTML = `
+                    <label class="flex items-center cursor-pointer">
+                        <input type="radio" name="answer" value="${index}" class="mr-3" ${userAnswers[currentQuestionIndex] === index ? 'checked' : ''}>
+                        ${option}
+                    </label>
+                `;
+                optionDiv.onclick = () => selectAnswer(index);
+                optionsContainer.appendChild(optionDiv);
+            });
+
+            document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+            document.getElementById('nextBtn').textContent = currentQuestionIndex === currentQuestions.length - 1 ? 'Selesai' : 'Selanjutnya';
+
+            const progress = ((currentQuestionIndex + 1) / currentQuestions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function selectAnswer(answerIndex) {
+            userAnswers[currentQuestionIndex] = answerIndex;
+            
+            // Update radio buttons and styling
+            const options = document.querySelectorAll('#optionsContainer > div');
+            options.forEach((option, index) => {
+                const radio = option.querySelector('input[type="radio"]');
+                if (index === answerIndex) {
+                    option.className = 'p-4 border border-primary rounded-lg cursor-pointer bg-primary text-white transition-colors duration-200';
+                    radio.checked = true;
+                } else {
+                    option.className = 'p-4 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200';
+                    radio.checked = false;
+                }
+            });
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < currentQuestions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion();
+            } else {
+                finishTest();
+            }
+        }
+
+        function backToTestType() {
+            document.getElementById('lessonPage').classList.add('hidden');
+            document.getElementById('testTypePage').classList.remove('hidden');
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+
+                if (timeLeft <= 300) { // 5 minutes warning
+                    document.getElementById('timer').classList.add('timer-warning', 'text-red-500');
+                }
+
+                if (timeLeft <= 0) {
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function finishTest() {
+            clearInterval(timerInterval);
+            testStarted = false;
+
+            document.getElementById('testPage').classList.add('hidden');
+            document.getElementById('resultsPage').classList.remove('hidden');
+
+            showResults();
+        }
+
+        function showResults() {
+            let correctAnswers = 0;
+            let wrongAnswers = 0;
+            let unanswered = 0;
+
+            currentQuestions.forEach((question, index) => {
+                if (userAnswers[index] === -1) {
+                    unanswered++;
+                } else if (userAnswers[index] === question.correct) {
+                    correctAnswers++;
+                } else {
+                    wrongAnswers++;
+                }
+            });
+
+            const scorePercentage = Math.round((correctAnswers / currentQuestions.length) * 100);
+
+            const subjectName = currentUser.subject === 'english' ? 'Bahasa Inggris' : currentUser.subject;
+            document.getElementById('scoreInfo').textContent = 
+                `${currentUser.name} (${currentUser.education}) - ${subjectName} - ${currentUser.testType === 'practice' ? 'Tes Latihan' : 'Tes Sebenarnya'}`;
+            document.getElementById('correctCount').textContent = correctAnswers;
+            document.getElementById('wrongCount').textContent = wrongAnswers;
+            document.getElementById('unansweredCount').textContent = unanswered;
+            document.getElementById('scorePercentage').textContent = scorePercentage + '%';
+
+            // Show detailed results
+            const detailedResults = document.getElementById('detailedResults');
+            detailedResults.innerHTML = '';
+
+            currentQuestions.forEach((question, index) => {
+                const resultDiv = document.createElement('div');
+                const userAnswer = userAnswers[index];
+                const isCorrect = userAnswer === question.correct;
+                const isUnanswered = userAnswer === -1;
+
+                let statusColor, statusIcon, statusText;
+                if (isUnanswered) {
+                    statusColor = 'text-yellow-600 dark:text-yellow-400';
+                    statusIcon = '⚪';
+                    statusText = 'Tidak Dijawab';
+                } else if (isCorrect) {
+                    statusColor = 'text-green-600 dark:text-green-400';
+                    statusIcon = '✅';
+                    statusText = 'Benar';
+                } else {
+                    statusColor = 'text-red-600 dark:text-red-400';
+                    statusIcon = '❌';
+                    statusText = 'Salah';
+                }
+
+                resultDiv.className = 'p-4 border border-gray-200 dark:border-gray-700 rounded-lg';
+                resultDiv.innerHTML = `
+                    <div class="flex items-start justify-between mb-2">
+                        <span class="font-medium text-gray-800 dark:text-white">Soal ${index + 1}</span>
+                        <span class="${statusColor} font-semibold">${statusIcon} ${statusText}</span>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300 mb-2">${question.question}</p>
+                    <div class="text-sm space-y-1">
+                        <div class="text-green-600 dark:text-green-400">
+                            <strong>Jawaban Benar:</strong> ${question.options[question.correct]}
+                        </div>
+                        ${!isUnanswered ? `
+                            <div class="${isCorrect ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}">
+                                <strong>Jawaban Anda:</strong> ${question.options[userAnswer]}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                detailedResults.appendChild(resultDiv);
+            });
+
+            // Show redo button only for practice tests
+            if (currentUser.testType === 'practice') {
+                document.getElementById('redoBtn').classList.remove('hidden');
+            } else {
+                document.getElementById('redoBtn').classList.add('hidden');
+            }
+        }
+
+        function redoTest() {
+            if (currentUser.testType === 'practice') {
+                document.getElementById('resultsPage').classList.add('hidden');
+                initializeTest();
+            }
+        }
+
+        function exitTest() {
+            showHomePage();
+            resetTest();
+        }
+
+        function showHomePage() {
+            document.getElementById('testTypePage').classList.add('hidden');
+            document.getElementById('lessonPage').classList.add('hidden');
+            document.getElementById('testPage').classList.add('hidden');
+            document.getElementById('resultsPage').classList.add('hidden');
+            document.getElementById('homePage').classList.remove('hidden');
+        }
+
+        function resetTest() {
+            clearInterval(timerInterval);
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            timeLeft = 1800;
+            testStarted = false;
+            currentQuestions = [];
+            document.getElementById('studentName').value = '';
+            document.getElementById('educationLevel').value = '';
+            document.getElementById('timer').classList.remove('timer-warning', 'text-red-500');
+            currentUser = { name: '', education: '', testType: '', subject: '' };
+        }
+
+        function showCustomAlert(message) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full mx-4">
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">${message}</p>
+                    <div class="flex justify-end">
+                        <button class="px-4 py-2 bg-primary text-white hover:bg-primary-dark rounded" onclick="this.closest('.fixed').remove()">OK</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        // Prevent page refresh during test
+        window.addEventListener('beforeunload', function (e) {
+            if (testStarted) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+    </script>
+</body>
+</html>
